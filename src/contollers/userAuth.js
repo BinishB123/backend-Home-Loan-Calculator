@@ -5,17 +5,14 @@ import authService from "../services/userAuth.js";
 const addUser = async (req, res, next) => {
   try {
     const bodyData = req.body;
-    console.log(bodyData);
-    
     const response = await authService.addUser(bodyData);
-    
     const accessToken = token.generateToken({ ...response }, { expiresIn: "1d" });
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
       sameSite: true,
       secure: true,
       path: "/",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      maxAge: 1 * 24 * 60 * 60 * 1000,
     });
     return res.status(statusCode.OK).json(response);
   } catch (error) {
@@ -37,7 +34,7 @@ const login = async (req, res, next) => {
       httpOnly: true,
       sameSite: "none",
       path: "/",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      maxAge: 1 * 24 * 60 * 60 * 1000,
 
     });
     
@@ -49,12 +46,8 @@ const login = async (req, res, next) => {
 };
 
 const logout = async (req, res, next) => {
-  res.clearCookie("RefreshToken", {
-    httpOnly: true,
-    sameSite: true,
-    path: "/",
-  });
-  res.clearCookie("AccessToken", {
+ 
+  res.clearCookie("accessToken", {
     httpOnly: true,
     sameSite: true,
     path: "/",

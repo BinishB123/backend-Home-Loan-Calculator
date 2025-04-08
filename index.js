@@ -3,6 +3,7 @@ import cors from "cors";
 import { config as dotenvConfig } from "dotenv";
 import dbConnect from "./src/mongo/mongoConnect.js";
 import authRouter from './src/router/auth.js'
+import loanRouter from "./src/router/loanRouter.js";
 dotenvConfig();
 const app = express();
 dbConnect();
@@ -19,8 +20,14 @@ app.use(
   })
 );
 
+app.use((req, res, next) => {
+  console.log(req.method);
+  next();
+});
+
 
 app.use("/auth", authRouter);
+app.use('/loan',loanRouter)
 
 
 

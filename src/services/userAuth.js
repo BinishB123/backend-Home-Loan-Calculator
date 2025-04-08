@@ -1,5 +1,6 @@
 import { statusCode } from "../constants/statusCodes.js";
 import CustomError from "../middleware/customErrorHandler.js";
+import loadRepo from "../repository/loanRepo.js";
 import authRepo from "../repository/userAuth.js";
 
 const addUser = async (bodyData) => {
@@ -14,21 +15,25 @@ const addUser = async (bodyData) => {
         "Please provide Reqired Datas",
         statusCode.FORBIDDEN
       );
-   const response = await authRepo.checkWhetherEmailExist(bodyData.email.trim())
-   if (response.success) {
-     const response = await authRepo.addUser(bodyData);
+    const response = await authRepo.checkWhetherEmailExist(bodyData.email.trim())
+      ;
+
+    if (response.success) {
+      const response = await authRepo.addUser(bodyData);
+      await loadRepo.defaultLoanCreate(response.id)
       return response;
-   }
+    }
   } catch (error) {
     throw new CustomError(error.message, error.statusCode);
   }
 };
 
-const login = async(email,password)=>{
-  try {    
-    if (!email||!password)   throw new CustomError('Please give required data',statusCode.Unprocessable_Entity)
-    const response = await authRepo.login(email,password)
-  
+
+
+const login = async (email, password) => {
+  try {
+    if (!email || !password) throw new CustomError('Please give required data', statusCode.Unprocessable_Entity)
+    const response = await authRepo.login(email, password)
     return response
   } catch (error) {
     throw new CustomError(error.message, error.statusCode);
