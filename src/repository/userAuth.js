@@ -12,8 +12,7 @@ const addUser = async (bodyData) => {
       email: bodyData.email.trim(),
       password: hashedPassword,
     });
-    
-    
+
     if (userCreated) {
       return {
         id: userCreated._id,

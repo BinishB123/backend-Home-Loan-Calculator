@@ -42,13 +42,15 @@ const fetchLoanDataWithUserId = async (userId) => {
   }
 };
 
-const updateLoanData = async (docId, fieldToChange, newData) => {
+const updateLoanData = async (userId, loanAmount, intrest, year) => {
   try {
     const update = await loanModel.updateOne(
-      { _id: new mongoose.Types.ObjectId(docId + "") },
+      { userId: new mongoose.Types.ObjectId(userId + "") },
       {
         $set: {
-          [fieldToChange]: newData,
+          loanAmount: loanAmount,
+          interestRate: intrest,
+          year: year,
         },
       }
     );

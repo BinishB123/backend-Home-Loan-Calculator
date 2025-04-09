@@ -4,9 +4,9 @@ const useSchema = new Schema({
   name: { type: String, required: true },
   mobile: { type: Number, required: true },
   email: { type: String, required: true },
-  password:{type:String,required:true}
+  password: { type: String, required: true },
 });
 
-const userModel = model("users",useSchema)
+const userModel = model("users", useSchema);
 
-export default userModel     
+export default userModel;
