@@ -22,10 +22,6 @@ app.use(
   })
 );
 
-app.use((req, res, next) => {
-  console.log(req.method);
-  next();
-});
 
 app.use("/auth", authRouter);
 app.use("/loan", loanRouter);
