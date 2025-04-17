@@ -5,31 +5,29 @@ import generateSchedule from "../helper/repaymentGenerateScheduler.js";
 
 const getLoanDataOfUser = async (userId) => {
   try {
-    const loanDataExist = await loanRepo.loanExistWithUserId(userId);
-    if (!loanDataExist) {
-      await loanRepo.defaultLoanCreate(userId);
-    }
-    const loanData = await loanRepo.fetchLoanDataWithUserId(userId);
+    const loanData = await loanRepo.getlatestAddedLoan(userId);
     const calculatedData = emiCalculator(
-      loanData.loanAmount,
-      loanData.interestRate,
-      loanData.year
+      100000,
+      1,
+      1
     );
-    return { ...calculatedData, ...loanData };
+    return { ...calculatedData, latestloanData :loanData };
   } catch (error) {
     throw new CustomError(error.message, error.statusCode);
   }
 };
 
-const updateLoanData = async (userId, loanAmount, intrest, year) => {
+const addNewLoan = async (userId, loanAmount, intrest, year,  loanName) => {
   try {
-    const update = await loanRepo.updateLoanData(
+     await loanRepo.addNewLoan(
       userId,
       loanAmount,
       intrest,
-      year
+      year,
+       loanName
     );
-    return update;
+    const loanData = loanRepo.getlatestAddedLoan(userId)
+    return loanData
   } catch (error) {
     throw new CustomError(error.message, error.statusCode);
   }
@@ -46,7 +44,7 @@ const repaymentMonthlyGenerator = async (loanAmount, intrest, years) => {
 
 const loanService = {
   getLoanDataOfUser,
-  updateLoanData,
+  addNewLoan,
   repaymentMonthlyGenerator,
 };
 

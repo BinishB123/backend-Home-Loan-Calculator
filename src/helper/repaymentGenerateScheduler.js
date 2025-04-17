@@ -1,4 +1,6 @@
 function generateSchedule(loanAmount,intrest , years) {
+  console.log(loanAmount,intrest , years);
+  
   const schedule = [];
   const numberOfMonths = years * 12;
   const monthlyRate = intrest / 12 / 100;

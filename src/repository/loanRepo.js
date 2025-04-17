@@ -3,20 +3,6 @@ import loanModel from "../Models/loanSchema.js";
 import CustomError from "../middleware/customErrorHandler.js";
 import { statusCode } from "../constants/statusCodes.js";
 
-const defaultLoanCreate = async (userId) => {
-  try {
-    await loanModel.create({
-      userId: userId,
-      loanAmount: 100000,
-      interestRate: 1,
-      year: 1,
-    });
-    return true;
-  } catch (error) {
-    throw new CustomError(error.message, error.statusCode);
-  }
-};
-
 const loanExistWithUserId = async (userId) => {
   try {
     const exist = await loanModel.findOne({
@@ -42,42 +28,39 @@ const fetchLoanDataWithUserId = async (userId) => {
   }
 };
 
-const updateLoanData = async (userId, loanAmount, intrest, year) => {
+const addNewLoan = async (userId, loanAmount, intrest, year, loanName) => {
   try {
-    const update = await loanModel.updateOne(
-      { userId: new mongoose.Types.ObjectId(userId + "") },
-      {
-        $set: {
-          loanAmount: loanAmount,
-          interestRate: intrest,
-          year: year,
-        },
-      }
-    );
-    if (update.matchedCount === 0) {
-      throw new CustomError(
-        "updation failed Something went wrong",
-        statusCode.NOT_FOUND
-      );
-    }
+    
+    const newLoan = await loanModel.create({
+      loanName:  loanName,
+      userId: new mongoose.Types.ObjectId(userId + ""),
+      loanAmount: loanAmount,
+      interestRate: intrest,
+      year: year,
+    });
+    return newLoan;
+  } catch (error) {
+    throw new CustomError(error.message, error.statusCode);
+  }
+};
 
-    if (update.modifiedCount === 0) {
-      throw new CustomError(
-        "updation failed Something went wrong",
-        statusCode.Unprocessable_Entity
-      );
-    }
-    return true;
+const getlatestAddedLoan = async (userId) => {
+  try {
+    const latestData = await loanModel.find({
+      userId: new mongoose.Types.ObjectId(userId + ""),
+    }).sort({createdAt:-1});
+    
+    return latestData.length ? latestData : [];
   } catch (error) {
     throw new CustomError(error.message, error.statusCode);
   }
 };
 
 const loanRepo = {
-  defaultLoanCreate,
   fetchLoanDataWithUserId,
   loanExistWithUserId,
-  updateLoanData,
+  addNewLoan,
+  getlatestAddedLoan,
 };
 
 export default loanRepo;

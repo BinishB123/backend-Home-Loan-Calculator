@@ -9,10 +9,10 @@ loanRouter.get(
   authMiddleware,
   loanConttroller.getLoanDataOfUser
 );
-loanRouter.patch(
-  "/update-loan-data",
+loanRouter.post(
+  "/add-new-loan-data",
   authMiddleware,
-  loanConttroller.updateLoanData
+  loanConttroller.addNewLoanData
 );
 loanRouter.get(
   "/get-monthly-repayment-schedule/:loanAmount/:intrest/:years",

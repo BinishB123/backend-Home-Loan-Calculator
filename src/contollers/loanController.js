@@ -15,21 +15,24 @@ const getLoanDataOfUser = async (req, res, next) => {
   }
 };
 
-const updateLoanData = async (req, res, next) => {
+const addNewLoanData = async (req, res, next) => {
   try {
-    const { userId, loanAmount, intrest, year } = req.body;
+    const { userId, loanAmount, intrest, year, loanName } = req.body;
 
-    if (!userId || !loanAmount || !intrest || !year) {
+    if (!userId || !loanAmount || !intrest || !year || !loanName.trim()) {
       throw new CustomError("try Again", statusCode.FORBIDDEN);
     }
-    const response = await loanService.updateLoanData(
+    const response = await loanService.addNewLoan(
       userId,
       parseInt(loanAmount),
       intrest,
-      year
+      year,
+      loanName
     );
     return res.status(statusCode.OK).json(response);
   } catch (error) {
+    console.log(error);
+
     next(error);
   }
 };
@@ -37,11 +40,14 @@ const updateLoanData = async (req, res, next) => {
 const getMonthlyRepaymentSchedule = async (req, res, next) => {
   try {
     const { loanAmount, intrest, years } = req.params;
+    
+
     const sechduledData = await loanService.repaymentMonthlyGenerator(
       parseInt(loanAmount),
       parseInt(intrest),
       parseInt(years)
     );
+    
     return res.status(statusCode.OK).json(sechduledData);
   } catch (error) {
     next(error);
@@ -50,7 +56,7 @@ const getMonthlyRepaymentSchedule = async (req, res, next) => {
 
 const loanConttroller = {
   getLoanDataOfUser,
-  updateLoanData,
+  addNewLoanData,
   getMonthlyRepaymentSchedule,
 };
 
