@@ -18,6 +18,7 @@ const addUser = async (bodyData) => {
     const response = await authRepo.checkWhetherEmailExist(
       bodyData.email.trim()
     );
+    console.log("response", response);
     if (response.success) {
       const response = await authRepo.addUser(bodyData);
       await loadRepo.defaultLoanCreate(response.id);

@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { config as dotenvConfig } from "dotenv";
-import dbConnect from "./src/mongo/mongoConnect.js";
+import dbConnect from "./src/database/postgressConnect.js";
 import authRouter from "./src/router/auth.js";
 import loanRouter from "./src/router/loanRouter.js";
 import cookieParser from "cookie-parser";
