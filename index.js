@@ -7,7 +7,7 @@ import loanRouter from "./src/router/loanRouter.js";
 import cookieParser from "cookie-parser";
 import errorHandler from "./src/middleware/errorHandler.js";
 dotenvConfig();
-const app = express(;
+const app = express();
 dbConnect();
 
 app.use(express.json());
