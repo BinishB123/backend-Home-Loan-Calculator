@@ -1,10 +1,19 @@
 const errorHandler = (err, req, res, next) => {
-  const statusCode = err.statusCode || 500;
-  const message = err.message || "Internal Server Error";
+  console.error("========== API ERROR ==========");
+  console.error("Time:", new Date().toISOString());
+  console.error("Method:", req.method);
+  console.error("URL:", req.originalUrl);
+  console.error("Message:", err.message);
+  console.error("Stack:", err.stack);
+  console.error("================================");
+
+  const statusCode = err.statusCode || err.status || 500;
+
   res.status(statusCode).json({
-    code: statusCode,
     success: false,
-    error: message,
+    message: statusCode === 500
+      ? "Internal Server Error"
+      : err.message,
   });
 };
 
