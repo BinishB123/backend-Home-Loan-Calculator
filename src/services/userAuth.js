@@ -20,7 +20,7 @@ const addUser = async (bodyData) => {
     );
     if (response.success) {
       const response = await authRepo.addUser(bodyData);
-      await loadRepo.defaultLoanCreate(response.id);
+      // await loadRepo.defaultLoanCreate(response.id);
       return response;
     }
   } catch (error) {
