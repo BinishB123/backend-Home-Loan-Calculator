@@ -6,9 +6,12 @@ import authRouter from "./src/router/auth.js";
 import loanRouter from "./src/router/loanRouter.js";
 import cookieParser from "cookie-parser";
 import errorHandler from "./src/middleware/errorHandler.js";
+import dotenv from "dotenv";
+
 dotenvConfig();
+
 const app = express();
-dbConnect();
+dbConnect(process.env.MONGO_URL);
 
 app.use(express.json());
 app.use(cookieParser());
@@ -27,7 +30,7 @@ app.use("/auth", authRouter);
 app.use("/loan", loanRouter);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT ;
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
