@@ -5,7 +5,7 @@ configDotenv();
 
 const authMiddleware = (req, res, next) => {
   const token = req.cookies?.accessToken;
-  console.log("Token from cookies:", token);
+  console.log("Token from cookies:",req.cookies);
   if (!token) {
     return res
       .status(statusCode.UNAUTHORIZED)
