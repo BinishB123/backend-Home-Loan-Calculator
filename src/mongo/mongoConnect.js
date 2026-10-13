@@ -3,9 +3,9 @@ import mongoose from "mongoose";
 
 configDotenv();
 
-const dbConnect = async () => {
+const dbConnect = async (url) => {
     try {
-        await mongoose.connect(process.env.MOGO_URL + "");
+        await mongoose.connect(url + "");
         console.log("MONGO connected");
     } catch (error) {
         console.log("error ", error.message);
